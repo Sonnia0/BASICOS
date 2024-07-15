@@ -5,8 +5,8 @@ class Usuario {
     private $id_usuario;
     private $Nombre;
     private $Apellido;
-    private $Correo_electronico;
-    private $Contraseña;
+    private $Correo;
+    private $Contrasena;
     private $Tipo_cuenta;
     private $conexionDB;
 
@@ -27,12 +27,12 @@ class Usuario {
         return $this->Apellido;
     }
 
-    public function getCorreoElectronico() {
-        return $this->Correo_electronico;
+    public function getCorreo() {
+        return $this->Correo;
     }
 
     public function getContraseña() {
-        return $this->Contraseña;
+        return $this->Contrasena;
     }
 
     public function getTipoCuenta() {
@@ -48,12 +48,12 @@ class Usuario {
         $this->Apellido = $apellido;
     }
 
-    public function setCorreoElectronico($correo) {
-        $this->Correo_electronico = $correo;
+    public function setCorreo($correo) {
+        $this->Correo = $correo;
     }
 
-    public function setContraseña($contraseña) {
-        $this->Contraseña = $contraseña;
+    public function setContraseña($contrasena) {
+        $this->Contrasena = $contrasena;
     }
 
     public function setTipoCuenta($tipoCuenta) {
@@ -63,14 +63,14 @@ class Usuario {
     public function addUsuario(): bool {
         $success = false;
         try {
-            $sql = "INSERT INTO usuarios (Nombre, Apellido, Correo_electronico, Contraseña, Tipo_cuenta) 
+            $sql = "INSERT INTO usuarios (Nombre, Apellido, Correo, Contraseña, Tipo_cuenta) 
                     VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute([
                 $this->Nombre,
                 $this->Apellido,
-                $this->Correo_electronico,
-                $this->Contraseña,
+                $this->Correo,
+                $this->Contrasena,
                 $this->Tipo_cuenta
             ]);
             $count = $stmt->rowCount();
@@ -103,8 +103,8 @@ class Usuario {
             $stmt->execute([
                 $this->Nombre,
                 $this->Apellido,
-                $this->Correo_electronico,
-                $this->Contraseña,
+                $this->Correo,
+                $this->Contrasena,
                 $this->Tipo_cuenta,
                 $id
             ]);

@@ -14,12 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Agregar usuario
-    $data = json_decode(file_get_contents('php://input'), true);
-    $nombre = $data['Nombre'];
-    $apellido = $data['Apellido'];
-    $correo = $data['Correo'];
-    $contraseña = $data['Contraseña'];
-    $tipoCuenta = $data['Tipo_cuenta'];
+    $nombre = $_POST['nameUser'];
+    $apellido = $_POST['lastnameUser'];
+    $correo = $_POST['emailUser'];
+    $contraseña = $_POST['passwordUser'];
+    $tipoCuenta = $_POST['accountType'];
 
     $conexionDB = new ConexionDB();
     $usuario = new Usuario($conexionDB);
