@@ -1,83 +1,90 @@
 <?php
-include('../dataAccess/dataAccessLogic/Productos.php');
+include('../dataAccess/conexion/Conexion.php');
 
-$response = array('success' => false, 'message' => 'Invalid request');
+class Productos {
+    private $conexionDB;
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    // Leer productos
-    $conexionDB = new ConexionDB();
-    $producto = new productos($conexionDB);
-    $productos = $producto->readProductos();
-    echo json_encode($productos);
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Agregar producto
-    $data = json_decode(file_get_contents('php://input'), true);
-    $nombreProducto = $data['nombre_producto'];
-    $descripcionProducto = $data['descripcion_producto'];
-    $precioProducto = $data['precio_producto'];
-    $imagenProducto = $data['imagen_producto'];
-
-    $conexionDB = new ConexionDB();
-    $producto = new Producto($conexionDB);
-    $producto->setNombreProducto($nombreProducto);
-    $producto->setDescripcionProducto($descripcionProducto);
-    $producto->setPrecioProducto($precioProducto);
-    $producto->setImagenProducto($imagenProducto);
-
-    if ($producto->addProducto()) {
-        $response['success'] = true;
-        $response['message'] = 'Producto agregado correctamente';
-    } else {
-        $response['message'] = 'Error al agregar el producto';
+    public function __construct() {
+        $conexion = new ConexionDB();
+        $this->conexionDB = $conexion->conectar();
     }
-    echo json_encode($response);
-    exit;
-}
 
-if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-    // Actualizar producto
-    $data = json_decode(file_get_contents('php://input'), true);
-    $idProducto = $data['id_producto'];
-    $nombreProducto = $data['nombre_producto'];
-    $descripcionProducto = $data['descripcion_producto'];
-    $precioProducto = $data['precio_producto'];
-    $imagenProducto = $data['imagen_producto'];
-
-    $conexionDB = new ConexionDB();
-    $producto = new Producto($conexionDB);
-    $producto->setNombreProducto($nombreProducto);
-    $producto->setDescripcionProducto($descripcionProducto);
-    $producto->setPrecioProducto($precioProducto);
-    $producto->setImagenProducto($imagenProducto);
-
-    if ($producto->updateProducto($idProducto)) {
-        $response['success'] = true;
-        $response['message'] = 'Producto actualizado correctamente';
-    } else {
-        $response['message'] = 'Error al actualizar el producto';
+    public function addProducto($nombre, $precio, $descripcion, $imagen) {
+        try {
+            $sql = "INSERT INTO productos (nombre_producto, precio_producto, descripcion_producto, imagen_producto) VALUES (?, ?, ?, ?)";
+            $stmt = $this->conexionDB->prepare($sql);
+            $stmt->execute([$nombre, $precio, $descripcion, $imagen]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
-    echo json_encode($response);
-    exit;
-}
 
-if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-    // Eliminar producto
-    $idProducto = intval($_GET['id']);
-
-    $conexionDB = new ConexionDB();
-    $producto = new Producto($conexionDB);
-    if ($producto->deleteProducto($idProducto)) {
-        $response['success'] = true;
-        $response['message'] = 'Producto eliminado correctamente';
-    } else {
-        $response['message'] = 'Error al eliminar el producto';
+    public function getProductos() {
+        try {
+            $sql = "SELECT * FROM productos";
+            $stmt = $this->conexionDB->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
-    echo json_encode($response);
-    exit;
+
+    public function updateProducto($id, $nombre, $precio, $descripcion, $imagen) {
+        try {
+            $sql = "UPDATE productos SET nombre_producto = ?, precio_producto = ?, descripcion_producto = ?, imagen_producto = ? WHERE id = ?";
+            $stmt = $this->conexionDB->prepare($sql);
+            $stmt->execute([$nombre, $precio, $descripcion, $imagen, $id]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function deleteProducto($id) {
+        try {
+            $sql = "DELETE FROM productos WHERE id = ?";
+            $stmt = $this->conexionDB->prepare($sql);
+            $stmt->execute([$id]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
 }
 
-echo json_encode($response);
+$producto = new Productos();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = $_POST['nombre_producto'];
+    $precio = $_POST['precio_producto'];
+    $descripcion = $_POST['descripcion_producto'];
+    $imagen = $_POST['imagen_producto'];
+    $result = $producto->addProducto($nombre, $precio, $descripcion, $imagen);
+    echo json_encode(['success' => $result]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $result = $producto->getProductos();
+    echo json_encode($result);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    parse_str(file_get_contents("php://input"), $_PUT);
+    $id = $_PUT['id'];
+    $nombre = $_PUT['nombre_producto'];
+    $precio = $_PUT['precio_producto'];
+    $descripcion = $_PUT['descripcion_producto'];
+    $imagen = $_PUT['imagen_producto'];
+    $result = $producto->updateProducto($id, $nombre, $precio, $descripcion, $imagen);
+    echo json_encode(['success' => $result]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $id = $_DELETE['id'];
+    $result = $producto->deleteProducto($id);
+    echo json_encode(['success' => $result]);
+}
 ?>

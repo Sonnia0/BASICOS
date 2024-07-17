@@ -41,20 +41,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
     // Actualizar usuario
     $data = json_decode(file_get_contents('php://input'), true);
-    $idUsuario = $data['id_usuario'];
+    $idUsuario = $data['id'];
     $nombre = $data['Nombre'];
     $apellido = $data['Apellido'];
     $correo = $data['Correo'];
-    $contraseña = $data['Contraseña'];
+    $contraseña = $data['Contrasenia'];
     $tipoCuenta = $data['Tipo_cuenta'];
 
     $conexionDB = new ConexionDB();
     $usuario = new Usuario($conexionDB);
-    $usuario->setId($idUsuario);
+    $usuario->setid($idUsuario);
     $usuario->setNombre($nombre);
     $usuario->setApellido($apellido);
     $usuario->setCorreo($correo);
-    $usuario->setContraseña($contraseña);
+    $usuario->setContraseña($contrasenia);
     $usuario->setTipoCuenta($tipoCuenta);
 
     if ($usuario->updateUsuario($idUsuario)) {
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     // Eliminar usuario
-    $idUsuario = intval($_GET['id_usuario']);
+    $idUsuario = intval($_GET['id']);
 
     $conexionDB = new ConexionDB();
     $usuario = new Usuario($conexionDB);

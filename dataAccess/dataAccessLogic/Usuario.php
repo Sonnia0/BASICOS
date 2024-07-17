@@ -63,7 +63,7 @@ class Usuario {
     public function addUsuario(): bool {
         $success = false;
         try {
-            $sql = "INSERT INTO usuarios (Nombre, Apellido, Correo, Contraseña, Tipo_cuenta) 
+            $sql = "INSERT INTO usuarios (Nombre, Apellido, Correo, Contrasenia, Tipo_cuenta) 
                     VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute([
@@ -98,7 +98,7 @@ class Usuario {
     public function updateUsuario($id): bool {
         $success = false;
         try {
-            $sql = "UPDATE usuarios SET Nombre = ?, Apellido = ?, Correo_electronico = ?, Contraseña = ?, Tipo_cuenta = ? WHERE id_usuario = ?";
+            $sql = "UPDATE usuarios SET Nombre = ?, Apellido = ?, Correo = ?, Contrasenia = ?, Tipo_cuenta = ? WHERE id = ?";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute([
                 $this->Nombre,
@@ -120,7 +120,7 @@ class Usuario {
     public function deleteUsuario($id): bool {
         $success = false;
         try {
-            $sql = "DELETE FROM usuarios WHERE id_usuario = ?";
+            $sql = "DELETE FROM usuarios WHERE id = ?";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute([$id]);
             $count = $stmt->rowCount();

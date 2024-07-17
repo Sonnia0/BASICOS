@@ -1,79 +1,88 @@
 <?php
-include('../dataAccess/dataAccessLogic/Categorias.php');
+include('../dataAccess/conexion/Conexion.php');
 
-// Initialize response array
-$response = array('success' => false, 'message' => 'Invalid request');
+class Categorias {
+    private $conexionDB;
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    // Read categorias
-    $conexionDB = new ConexionDB();
-    $categoria = new categorias($conexionDB);
-    $categorias = $categoria->readCategorias();
-    echo json_encode($categorias);
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Add categoria
-    $data = json_decode(file_get_contents('php://input'), true);
-    $nombreCategoria = $data['Nombre_categoria'];
-    $descripcionCategoria = $data['Descripcion_categoria'];
-    $imagenCategoria = $data['Imagen_categoria'];
-
-    $conexionDB = new ConexionDB();
-    $categoria = new Categoria($conexionDB);
-    $categoria->setNombreCategoria($nombreCategoria);
-    $categoria->setDescripcionCategoria($descripcionCategoria);
-    $categoria->setImagenCategoria($imagenCategoria);
-    if ($categoria->addCategoria()) {
-        $response['success'] = true;
-        $response['message'] = 'Categoria agregada correctamente';
-    } else {
-        $response['message'] = 'Error al agregar la categoria';
+    public function __construct() {
+        $conexion = new ConexionDB();
+        $this->conexionDB = $conexion->conectar();
     }
-    echo json_encode($response);
-    exit;
-}
 
-if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-    // Update categoria
-    $data = json_decode(file_get_contents('php://input'), true);
-    $idCategoria = $data['ID_categoria'];
-    $nombreCategoria = $data['Nombre_categoria'];
-    $descripcionCategoria = $data['Descripcion_categoria'];
-    $imagenCategoria = $data['Imagen_categoria'];
-
-    $conexionDB = new ConexionDB();
-    $categoria = new Categoria($conexionDB);
-    $categoria->setNombreCategoria($nombreCategoria);
-    $categoria->setDescripcionCategoria($descripcionCategoria);
-    $categoria->setImagenCategoria($imagenCategoria);
-    if ($categoria->updateCategoria($idCategoria)) {
-        $response['success'] = true;
-        $response['message'] = 'Categoria actualizada correctamente';
-    } else {
-        $response['message'] = 'Error al actualizar la categoria';
+    public function addCategoria($nombre, $descripcion, $imagen) {
+        try {
+            $sql = "INSERT INTO categorias (nombre_categoria, descripcion_categoria, imagen_categoria) VALUES (?, ?, ?)";
+            $stmt = $this->conexionDB->prepare($sql);
+            $stmt->execute([$nombre, $descripcion, $imagen]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
-    echo json_encode($response);
-    exit;
-}
 
-if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-    // Delete categoria
-    $idCategoria = intval($_GET['id']);
-
-    $conexionDB = new ConexionDB();
-    $categoria = new Categoria($conexionDB);
-    if ($categoria->deleteCategoria($idCategoria)) {
-        $response['success'] = true;
-        $response['message'] = 'Categoria eliminada correctamente';
-    } else {
-        $response['message'] = 'Error al eliminar la categoria';
+    public function getCategorias() {
+        try {
+            $sql = "SELECT * FROM categorias";
+            $stmt = $this->conexionDB->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
-    echo json_encode($response);
-    exit;
+
+    public function updateCategoria($id, $nombre, $descripcion, $imagen) {
+        try {
+            $sql = "UPDATE categorias SET nombre_categoria = ?, descripcion_categoria = ?, imagen_categoria = ? WHERE id = ?";
+            $stmt = $this->conexionDB->prepare($sql);
+            $stmt->execute([$nombre, $descripcion, $imagen, $id]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function deleteCategoria($id) {
+        try {
+            $sql = "DELETE FROM categorias WHERE id = ?";
+            $stmt = $this->conexionDB->prepare($sql);
+            $stmt->execute([$id]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
 }
 
-echo json_encode($response);
+$categoria = new Categorias();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = $_POST['nombre_categoria'];
+    $descripcion = $_POST['descripcion_categoria'];
+    $imagen = $_POST['imagen_categoria'];
+    $result = $categoria->addCategoria($nombre, $descripcion, $imagen);
+    echo json_encode(['success' => $result]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $result = $categoria->getCategorias();
+    echo json_encode($result);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    parse_str(file_get_contents("php://input"), $_PUT);
+    $id = $_PUT['id'];
+    $nombre = $_PUT['nombre_categoria'];
+    $descripcion = $_PUT['descripcion_categoria'];
+    $imagen = $_PUT['imagen_categoria'];
+    $result = $categoria->updateCategoria($id, $nombre, $descripcion, $imagen);
+    echo json_encode(['success' => $result]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $id = $_DELETE['id'];
+    $result = $categoria->deleteCategoria($id);
+    echo json_encode(['success' => $result]);
+}
 ?>
-

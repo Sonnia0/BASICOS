@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Completo con Tailwind CSS</title>
+    <title>lista usuarios</title>
     <!-- Incluye Tailwind CSS -->
     <link href="../../styles/tailwind.css" rel="stylesheet">
     <!-- Enlace a Font Awesome -->
@@ -11,7 +11,6 @@
 </head>
 <body class="bg-gray-100">
     <!-- Barra de navegación -->
-    <?php include('../../components/navigation.php');?>
 
     <div class="container mx-auto max-w-4xl py-8">
         <!-- Encabezado -->

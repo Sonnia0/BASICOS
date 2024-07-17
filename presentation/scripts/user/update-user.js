@@ -1,27 +1,29 @@
 window.addEventListener('message', (event) => {
     const user = event.data;
-    document.getElementById('nameUser').value = user.nameUser;
-    document.getElementById('lastnameUser').value = user.lastnameUser;
-    document.getElementById('emailUser').value = user.emailUser;
-    document.getElementById('passwordUser').value = user.passwordUser;
-    document.getElementById('accountType').value = user.accountType;
+    document.getElementById('nameUser').value = user.nombre;
+    document.getElementById('lastnameUser').value = user.apellido;
+    document.getElementById('emailUser').value = user.correo;
+    document.getElementById('passwordUser').value = user.contrasenia;
+    document.getElementById('accountType').value = user.tipo_cuenta;
 });
 
 async function updateUser(event) {
     event.preventDefault();
 
-    const nameUser = document.getElementById('nameUser').value;
-    const lastnameUser = document.getElementById('lastnameUser').value;
-    const emailUser = document.getElementById('emailUser').value;
-    const passwordUser = document.getElementById('passwordUser').value;
+    const id = document.getElementById('idUser').value;
+    const Name = document.getElementById('nameUser').value;
+    const lastName = document.getElementById('lastnameUser').value;
+    const email = document.getElementById('emailUser').value;
+    const password = document.getElementById('passwordUser').value;
     const accountType = document.getElementById('accountType').value;
 
     const user = {
-        nameUser: nameUser,
-        lastnameUser: lastnameUser,
-        emailUser: emailUser,
-        passwordUser: passwordUser,
-        accountType: accountType
+        id: id,
+        Nombre: Name,
+        Apellido: lastName,
+        Correo: email,
+        Contrasenia: password,
+        Tipo_cuenta: accountType
     };
 
     console.log(user);
@@ -34,7 +36,12 @@ async function updateUser(event) {
             },
             body: JSON.stringify(user)
         });
-        window.close();
+        if (response.ok) {
+            alert('Usuario actualizado correctamente');
+            window.close();
+        } else {
+            alert('Error al actualizar usuario');
+        }
     } catch (error) {
         console.error('Error al actualizar usuario:', error);
     }
