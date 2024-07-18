@@ -88,7 +88,7 @@ async function deleteCategoria(categoriaId) {
 }
 
 function openEditForm(categoria) {
-    console.log(categoria)
+    
     const newWindow = window.open('../categoria/updateCategorias.php', '_blank', 'width=600,height=600');
 
     newWindow.onload = function() {

@@ -22,17 +22,18 @@
                 <label for="descripcionProducto" class="block text-gray-700 text-sm font-bold mb-2">Descripción del producto:</label>
                 <input type="text" id="descripcionProducto" name="descripcionProducto" placeholder="Ingrese la descripción del producto" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
-            <div class="mb-4">
-                <label for="imagenProducto" class="block text-gray-700 text-sm font-bold mb-2">Imagen del producto:</label>
-                <input type="text" id="imagenProducto" name="imagenProducto" placeholder="Ingrese la URL de la imagen del producto" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
-            <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Enviar
-                </button>
-            </div>
-        </form>
-    </div>
+            <div class="mb-6">
+    <label for="imagenProducto" class="block text-gray-700 text-sm font-bold mb-2">Imagen del Producto:</label>
+    <input type="file" id="imagenProducto" name="imagenProducto"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+</div>
+
+<div class="flex items-center justify-between">
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        Enviar
+    </button>
+</div>
+
 
     <script src="../../scripts/producto/add-producto.js"></script>
 </body>

@@ -1,4 +1,4 @@
-console.log ("Hola")
+
 async function getUsers() {
 
     try {
@@ -108,7 +108,7 @@ async function getUsers() {
     };
   }
   
-  //Show Photo
+
   
 
   
