@@ -1,4 +1,4 @@
-
+console.log("Hola");
 
 async function getCategorias() {
     try {

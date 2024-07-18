@@ -50,7 +50,7 @@ async function getProductos() {
             const photoIcon = document.createElement('i');
             photoIcon.classList.add('fa-regular', 'fa-file-image', 'text-green-500', 'cursor-pointer');
             photoIcon.setAttribute('title', 'Foto de Perfil');
-            photoIcon.addEventListener('click', () => showUserPhotos(user.photoUser));
+            photoIcon.addEventListener('click', () => showProductoImage(producto.imagen_producto));
 
             actionsCell.appendChild(editIcon);
             actionsCell.appendChild(deleteIcon);
@@ -104,9 +104,9 @@ function openEditForm(producto) {
     };
 }
 
-  async function showUserPhotos(photoUser) {
+  async function showProductoImage(ProductoImage) {
     
-    const imageUrl ="../../../businessLogic/"+photoUser;
+    const imageUrl ="../../../businessLogic/"+ProductoImage;
   
     const newWindow = window.open('', '_blank', 'width=600,height=600');
     newWindow.document.write(`
@@ -132,7 +132,7 @@ function openEditForm(producto) {
             </style>
         </head>
         <body>
-            <img src="${imageUrl}" alt="Foto de Usuario">
+            <img src="${imageUrl}" alt="Foto de Producto">
         </body>
         </html>
     `);

@@ -55,11 +55,7 @@ async function getUsers() {
         deleteIcon.setAttribute('title', 'Eliminar');
         deleteIcon.addEventListener('click', () => deleteUser(user.id));
   
-        // Photo icon
-        const photoIcon = document.createElement('i');
-        photoIcon.classList.add('fa-regular', 'fa-file-image', 'text-green-500', 'cursor-pointer');
-        photoIcon.setAttribute('title', 'Foto de Perfil');
-        photoIcon.addEventListener('click', () => showUserPhotos(user.photoUser));
+
   
         // Add icons to the action cell
         actionsCell.appendChild(editIcon);
