@@ -1,4 +1,4 @@
-console.log ("Hola")
+
 async function getUsers() {
 
     try {
@@ -55,16 +55,12 @@ async function getUsers() {
         deleteIcon.setAttribute('title', 'Eliminar');
         deleteIcon.addEventListener('click', () => deleteUser(user.id));
   
-        // Photo icon
-        const photoIcon = document.createElement('i');
-        photoIcon.classList.add('fa-regular', 'fa-file-image', 'text-green-500', 'cursor-pointer');
-        photoIcon.setAttribute('title', 'Foto de Perfil');
-        photoIcon.addEventListener('click', () => showUserPhotos(user.photoUser));
+
   
         // Add icons to the action cell
         actionsCell.appendChild(editIcon);
         actionsCell.appendChild(deleteIcon);
-        actionsCell.appendChild(photoIcon);
+       
   
         // Add cells to row
         row.appendChild(id);
@@ -112,41 +108,8 @@ async function getUsers() {
     };
   }
   
-  //Show Photo
+
   
-  async function showUserPhotos(photoUser) {
-    
-    const imageUrl ="../../../businessLogic/"+photoUser;
-  
-    const newWindow = window.open('', '_blank', 'width=600,height=600');
-    newWindow.document.write(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Foto de Perfil</title>
-            <style>
-                body {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    margin: 0;
-                    background-color: #f0f0f0;
-                }
-                img {
-                    max-width: 100%;
-                    max-height: 100%;
-                }
-            </style>
-        </head>
-        <body>
-            <img src="${imageUrl}" alt="Foto de Usuario">
-        </body>
-        </html>
-    `);
-    newWindow.document.close();
-  }
+
   
   document.addEventListener('DOMContentLoaded', getUsers);

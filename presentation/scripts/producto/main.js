@@ -45,12 +45,12 @@ async function getProductos() {
             const deleteIcon = document.createElement('i');
             deleteIcon.classList.add('fas', 'fa-trash-alt', 'text-red-500', 'cursor-pointer', 'mr-2');
             deleteIcon.setAttribute('title', 'Eliminar');
-            deleteIcon.addEventListener('click', () => deleteProducto(producto.id));
+            deleteIcon.addEventListener('click', () => deleteProducto(producto.id_producto));
 
             const photoIcon = document.createElement('i');
             photoIcon.classList.add('fa-regular', 'fa-file-image', 'text-green-500', 'cursor-pointer');
-            photoIcon.setAttribute('title', 'Foto de Perfil');
-            photoIcon.addEventListener('click', () => showUserPhotos(user.photoUser));
+            photoIcon.setAttribute('title', 'Foto de Producto');
+            photoIcon.addEventListener('click', () => showProductoImage(producto.imagen_producto));
 
             actionsCell.appendChild(editIcon);
             actionsCell.appendChild(deleteIcon);
@@ -85,7 +85,13 @@ async function deleteProducto(productoId) {
                 },
                 body: formData.toString()
             });
-            getProductos();
+
+            if (response.ok) {
+                console.log('Producto eliminado exitosamente');
+                getProductos(); // Actualiza la lista de productos después de eliminar uno
+            } else {
+                console.error('Error al eliminar el producto:', response.statusText);
+            }
         } catch (error) {
             console.error('Error al eliminar el producto:', error);
         }
@@ -104,10 +110,9 @@ function openEditForm(producto) {
     };
 }
 
-  async function showUserPhotos(photoUser) {
-    
-    const imageUrl ="../../../businessLogic/"+photoUser;
-  
+async function showProductoImage(imagenProducto) {
+    const imageUrl = "../../../businessLogic/" + imagenProducto;
+
     const newWindow = window.open('', '_blank', 'width=600,height=600');
     newWindow.document.write(`
         <!DOCTYPE html>
@@ -115,7 +120,7 @@ function openEditForm(producto) {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Foto de Perfil</title>
+            <title>Foto de Producto</title>
             <style>
                 body {
                     display: flex;
@@ -132,11 +137,11 @@ function openEditForm(producto) {
             </style>
         </head>
         <body>
-            <img src="${imageUrl}" alt="Foto de Usuario">
+            <img src="${imageUrl}" alt="Foto de Producto">
         </body>
         </html>
     `);
     newWindow.document.close();
-  }
-  
+}
+
 document.addEventListener('DOMContentLoaded', getProductos);

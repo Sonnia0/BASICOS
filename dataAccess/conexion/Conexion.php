@@ -1,6 +1,6 @@
 <?php
 class ConexionDB {
-    private $server = "localhost:3308";
+    private $server = "localhost:3306";
     private $database = "bebidas";
     private $username = "root";
     private $password = "";

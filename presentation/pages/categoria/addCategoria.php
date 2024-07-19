@@ -18,10 +18,12 @@
                 <label for="descripcionCategoria" class="block text-gray-700 text-sm font-bold mb-2">Descripción de la categoría:</label>
                 <input type="text" id="descripcionCategoria" name="descripcionCategoria" placeholder="Ingrese la descripción de la categoría" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
-            <div class="mb-4">
-                <label for="imagenCategoria" class="block text-gray-700 text-sm font-bold mb-2">Imagen de la categoría:</label>
-                <input type="text" id="imagenCategoria" name="imagenCategoria" placeholder="Ingrese la URL de la imagen de la categoría" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
+            <div class="mb-6">
+    <label for="imagenCategoria" class="block text-gray-700 text-sm font-bold mb-2">Imagen de la Categoria:</label>
+    <input type="file" id="imagenCategoria" name="imagenCategoria"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+</div>
+
             <div class="flex items-center justify-between">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Enviar

@@ -1,91 +1,45 @@
 <?php
-require_once '../dataAccess/conexion/Conexion.php';
+include('../dataAccess/conexion/Conexion.php');
 
 class Proveedor {
-    private $idProveedor;
-    private $cedula;
-    private $nombres;
-    private $apellidos;
-    private $telefono;
-    private $email;
-    private $empresa;
+    private $ID_proveedor;
+    private $Nombre_proveedor;
+    private $Contacto;
+    private $Terminos_negociacion;
     private $conexionDB;
 
     public function __construct(ConexionDB $conexionDB) {
         $this->conexionDB = $conexionDB->conectar();
     }
 
-    // Getters
-    public function getIdProveedor() {
-        return $this->idProveedor;
+    public function setNombreProveedor($nombre) {
+        $this->Nombre_proveedor = $nombre;
     }
 
-    public function getCedula() {
-        return $this->cedula;
+    public function setContacto($contacto) {
+        $this->Contacto = $contacto;
     }
 
-    public function getNombres() {
-        return $this->nombres;
-    }
-
-    public function getApellidos() {
-        return $this->apellidos;
-    }
-
-    public function getTelefono() {
-        return $this->telefono;
-    }
-
-    public function getEmail() {
-        return $this->email;
-    }
-
-    public function getEmpresa() {
-        return $this->empresa;
-    }
-
-    // Setters
-    public function setCedula($cedula) {
-        $this->cedula = $cedula;
-    }
-
-    public function setNombres($nombres) {
-        $this->nombres = $nombres;
-    }
-
-    public function setApellidos($apellidos) {
-        $this->apellidos = $apellidos;
-    }
-
-    public function setTelefono($telefono) {
-        $this->telefono = $telefono;
-    }
-
-    public function setEmail($email) {
-        $this->email = $email;
-    }
-
-    public function setEmpresa($empresa) {
-        $this->empresa = $empresa;
+    public function setTerminosNegociacion($terminos) {
+        $this->Terminos_negociacion = $terminos;
     }
 
     public function addProveedor(): bool {
         $success = false;
         try {
-            $sql = "INSERT INTO proveedor (cedula, nombres, apellidos, telefono, email, empresa) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO Proveedor (Nombre_proveedor, Contacto, Terminos_negociacion) 
+                    VALUES (?, ?, ?)";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute([
-                $this->cedula,
-                $this->nombres,
-                $this->apellidos,
-                $this->telefono,
-                $this->email,
-                $this->empresa
+                $this->Nombre_proveedor,
+                $this->Contacto,
+                $this->Terminos_negociacion
             ]);
-            $success = $stmt->rowCount() > 0;
+            $count = $stmt->rowCount();
+            $success = $count > 0;
         } catch (PDOException $e) {
             echo $e->getMessage();
+            $success = false;
         }
         return $success;
     }
@@ -93,7 +47,7 @@ class Proveedor {
     public function readProveedores(): array {
         $proveedores = [];
         try {
-            $sql = "SELECT * FROM proveedor";
+            $sql = "SELECT * FROM Proveedor";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute();
             $proveedores = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -106,20 +60,19 @@ class Proveedor {
     public function updateProveedor($id): bool {
         $success = false;
         try {
-            $sql = "UPDATE proveedor SET cedula = ?, nombres = ?, apellidos = ?, telefono = ?, email = ?, empresa = ? WHERE idProveedor = ?";
+            $sql = "UPDATE Proveedor SET Nombre_proveedor = ?, Contacto = ?, Terminos_negociacion = ? WHERE ID_proveedor = ?";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute([
-                $this->cedula,
-                $this->nombres,
-                $this->apellidos,
-                $this->telefono,
-                $this->email,
-                $this->empresa,
+                $this->Nombre_proveedor,
+                $this->Contacto,
+                $this->Terminos_negociacion,
                 $id
             ]);
-            $success = $stmt->rowCount() > 0;
+            $count = $stmt->rowCount();
+            $success = $count > 0;
         } catch (PDOException $e) {
             echo $e->getMessage();
+            $success = false;
         }
         return $success;
     }
@@ -127,12 +80,14 @@ class Proveedor {
     public function deleteProveedor($id): bool {
         $success = false;
         try {
-            $sql = "DELETE FROM proveedor WHERE idProveedor = ?";
+            $sql = "DELETE FROM Proveedor WHERE ID_proveedor = ?";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute([$id]);
-            $success = $stmt->rowCount() > 0;
+            $count = $stmt->rowCount();
+            $success = $count > 0;
         } catch (PDOException $e) {
             echo $e->getMessage();
+            $success = false;
         }
         return $success;
     }
