@@ -65,12 +65,12 @@ async function getVentas() {
     }
 }
 
-async function deleteVenta(ventaId) {
+async function deleteVenta(ventaid) {
     const confirmDelete = confirm('¿Estás seguro de que deseas eliminar esta venta?');
     if (confirmDelete) {
         try {
             const formData = new URLSearchParams();
-            formData.append('id', ventaId);
+            formData.append('id', ventaid);
 
             const response = await fetch(`http://localhost/BASICOS/businessLogic/swventas.php`, {
                 method: 'DELETE',

@@ -1,4 +1,3 @@
-console.log("HOLA")
 window.addEventListener('message', (event) => {
     const user = event.data;
     document.getElementById('nameUser').value = user.nombre;
@@ -8,12 +7,11 @@ window.addEventListener('message', (event) => {
     document.getElementById('accountType').value = user.tipo_cuenta;
 });
 
-
-
 async function updateUser(event) {
     event.preventDefault();
+
     const id = document.getElementById('idUser').value;
-    const name = document.getElementById('nameUser').value;
+    const Name = document.getElementById('nameUser').value;
     const lastName = document.getElementById('lastnameUser').value;
     const email = document.getElementById('emailUser').value;
     const password = document.getElementById('passwordUser').value;
@@ -21,7 +19,7 @@ async function updateUser(event) {
 
     const user = {
         id: id,
-        Nombre: name,
+        Nombre: Name,
         Apellido: lastName,
         Correo: email,
         Contrasenia: password,
