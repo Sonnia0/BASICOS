@@ -57,6 +57,21 @@ class Productos {
 $producto = new Productos();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    
+    $directorio="imagenes/";
+    $nombreArchivo=$_FILES['imagen_producto']['name'];
+    $rutaTemporal=$_FILES['imagen_prodcuto']['tmp_name'];
+
+    $rutaDefinitiva=$directorio.$nombreArchivo;
+
+   
+
+    if(!file_exists($directorio)){
+        mkdir($directorio,0777);
+    }
+
+    move_uploaded_file($rutaTemporal,$rutaDefinitiva);
     $nombre = $_POST['nombre_producto'];
     $precio = $_POST['precio_producto'];
     $descripcion = $_POST['descripcion_producto'];

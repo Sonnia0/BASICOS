@@ -10,13 +10,14 @@ async function addProducto(event) {
     const nombreProducto = document.getElementById('nombreProducto').value;
     const precioProducto = document.getElementById('precioProducto').value;
     const descripcionProducto = document.getElementById('descripcionProducto').value;
-    const imagenProducto = document.getElementById('imagenProducto').value;
+    const imagenProducto = document.getElementById('imagenProducto');
+    const file = imagenProducto.files[0]
 
     const formData = new FormData();
     formData.append('nombre_producto', nombreProducto);
     formData.append('precio_producto', precioProducto);
     formData.append('descripcion_producto', descripcionProducto);
-    formData.append('imagen_producto', imagenProducto);
+    formData.append('imagen_producto', file);
 
     try {
         const response = await fetch('http://localhost/BASICOS/businessLogic/swproductos.php', {

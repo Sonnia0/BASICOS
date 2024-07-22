@@ -113,7 +113,7 @@ class Productos {
     public function deleteProductos($id): bool {
         $success = false;
         try {
-            $sql = "DELETE FROM productos WHERE id_producto = ?";
+            $sql = "DELETE FROM productos WHERE id = ?";
             $stmt = $this->conexionDB->prepare($sql);
             $stmt->execute([$id]);
             $count = $stmt->rowCount();

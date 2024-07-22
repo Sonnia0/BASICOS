@@ -9,12 +9,14 @@ categoriaForm.addEventListener('submit', (event) => {
 async function addCategoria(event) {
     const nombreCategoria = document.getElementById('nombreCategoria').value;
     const descripcionCategoria = document.getElementById('descripcionCategoria').value;
-    const imagenCategoria = document.getElementById('imagenCategoria').value;
+    const imagenCategoria = document.getElementById('imagenCategoria');
+    const file = imagenCategoria.files[0]
 
     const formData = new FormData();
     formData.append('nombre_categoria', nombreCategoria); // Asegúrate de que los nombres coincidan con los campos de la base de datos
     formData.append('descripcion_categoria', descripcionCategoria);
-    formData.append('imagen_categoria', imagenCategoria);
+    formData.append('imagen_categoria', file);
+    
 
     try {
         const response = await fetch('http://localhost/BASICOS/businessLogic/swcategorias.php', {

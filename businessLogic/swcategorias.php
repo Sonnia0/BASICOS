@@ -57,9 +57,25 @@ class Categorias {
 $categoria = new Categorias();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+
+    
+    $directorio="imagenes/";
+    $nombreArchivo=$_FILES['imagen_categoria']['name'];
+    $rutaTemporal=$_FILES['imagen_categoria']['tmp_name'];
+
+    $rutaDefinitiva=$directorio.$nombreArchivo;
+
+   
+
+    if(!file_exists($directorio)){
+        mkdir($directorio,0777);
+    }
+
+    move_uploaded_file($rutaTemporal,$rutaDefinitiva);
     $nombre = $_POST['nombre_categoria'];
     $descripcion = $_POST['descripcion_categoria'];
-    $imagen = $_POST['imagen_categoria'];
+    $imagen = $rutaDefinitiva;
     $result = $categoria->addCategoria($nombre, $descripcion, $imagen);
     echo json_encode(['success' => $result]);
 }
